@@ -3,6 +3,7 @@ package com.example.horoscopeapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -26,17 +27,35 @@ class HoroscopeAdapter (private val dataSet: List<Horoscope>) :
 
     override fun onBindViewHolder(holder: HoroscopeViewHolder, position: Int) {
         val horoscope = dataSet[position]
-        holder.textView.text = horoscope.name
+        holder.nametextView.text = horoscope.name
+        holder.desctextView.text = horoscope.desc
+        holder.datetextView.text = horoscope.date
+        //holder.logoimageView.setImageResource(horoscope.logo)
+        val context = holder.logoimageView.context
+        holder.logoimageView.setImageDrawable(context.getDrawable(horoscope.logo))
+        holder.render(horoscope)
     }
 
 }
 
 
 class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val textView: TextView
-
+    val nametextView: TextView
+    val desctextView: TextView
+    val datetextView: TextView
+    val logoimageView: ImageView
     init {
         // Define click listener for the ViewHolder's View
-        textView = view.findViewById(R.id.nameTextView)
+        nametextView = view.findViewById(R.id.nameTextView)
+        desctextView = view.findViewById(R.id.descriptionTextView)
+        datetextView = view.findViewById(R.id.dateTextView)
+        logoimageView = view.findViewById(R.id.logoImageView)
+    }
+
+    fun render(horoscope: Horoscope){
+        nametextView.setText(horoscope.name)
+        desctextView.setText(horoscope.desc)
+        datetextView.setText(horoscope.date)
+        logoimageView.setImageResource(horoscope.logo)
     }
 }

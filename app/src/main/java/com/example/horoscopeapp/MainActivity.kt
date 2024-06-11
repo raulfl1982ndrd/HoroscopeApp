@@ -6,24 +6,25 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
     val horoscopesList: List<Horoscope> = listOf(
-        Horoscope("aries","Aries",0),
-        Horoscope("taurus","Taurus",0),
-        Horoscope("gemini","Gemini",0),
-        Horoscope("cancer","Cancer",0),
-        Horoscope("leo","Leo",0),
-        Horoscope("virgo","Virgo",0),
-        Horoscope("libra","Libra",0),
-        Horoscope("scorpio","Scorpio",0),
-        Horoscope("sagittarius","Sagittarius",0),
-        Horoscope("capricorn","Capricorn",0),
-        Horoscope("aquarius","Aquarius",0),
-        Horoscope("pisces","Pisces",0)
+        Horoscope("aries","Aries",R.drawable.aries,"(march 21 - april 19)",""),
+        Horoscope("taurus","Taurus",R.drawable.taurus,"(april 20 - may 20)",""),
+        Horoscope("gemini","Gemini",R.drawable.gemini,"(may 21 - june 20)",""),
+        Horoscope("cancer","Cancer",R.drawable.cancer,"(june 21 - july 22)",""),
+        Horoscope("leo","Leo",R.drawable.leo,"(july 23 - august 22)",""),
+        Horoscope("virgo","Virgo",R.drawable.virgo,"(august 23 - september 22)",""),
+        Horoscope("libra","Libra",R.drawable.libra,"(september 23 - october 22)",""),
+        Horoscope("scorpio","Scorpio", R.drawable.scorpio,"(october 23 - november 21)",""),
+        Horoscope("sagittarius","Sagittarius",R.drawable.sagittarius,"(november 22 - december 21)",""),
+        Horoscope("capricorn","Capricorn",R.drawable.capricornus,"(december 22 - january 19)",""),
+        Horoscope("aquarius","Aquarius",R.drawable.aquarius,"(january 20 - february 18)",""),
+        Horoscope("pisces","Pisces",R.drawable.pisces,"(february 19 - march 20","")
     )
 
     lateinit var recyclerView: RecyclerView
@@ -48,5 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        //recyclerView.layoutManager = GridLayoutManager(this,2)
+        getDrawable(R.drawable.sagittarius)
+        getString(R.string.app_name)
+        getColor(R.color.purple_200)
+
     }
 }
