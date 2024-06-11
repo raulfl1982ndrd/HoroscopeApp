@@ -55,7 +55,7 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun render(horoscope: Horoscope){
         nametextView.setText(horoscope.name)
         desctextView.setText(horoscope.desc)
-        datetextView.setText(horoscope.date)
+        datetextView.setIn(horoscope.date)
         logoimageView.setImageResource(horoscope.logo)
     }
 }

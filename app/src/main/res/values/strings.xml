@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">HoroscopeApp</string>
+    <string name="date_aries">(march 21 - april 19)</string>
+    <string name="date_taurus">(april 20 - may 20)</string>
+    <string name="date_gemini">(may 21 - june 20)</string>
+    <string name="date_cancer">(june 21 - july 22)</string>
+    <string name="date_leo">(july 23 - august 22)</string>
+    <string name="date_virgo">(august 23 - september 22)</string>
+    <string name="date_libra">(september 23 - october 22)</string>
+    <string name="date_scorpio">(october 23 - november 21)</string>
+    <string name="date_sagittarius">(november 22 - december 21)</string>
+    <string name="date_capricorn">(december 22 - january 19)</string>
+    <string name="date_aquarius">(january 20 - february 18)</string>
+    <string name="date_pisces">(february 19 - march 20)</string>
 </resources>
