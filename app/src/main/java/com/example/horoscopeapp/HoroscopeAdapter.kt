@@ -1,13 +1,15 @@
 package com.example.horoscopeapp
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class HoroscopeAdapter (private val dataSet: List<Horoscope>) :
+class HoroscopeAdapter (private val dataSet: List<Horoscope>,private val onItemClickListener: (Int)->Unit) :
     RecyclerView.Adapter<HoroscopeViewHolder>() {
     /**
      * Provide a reference to the type of views that you are using
@@ -35,6 +37,11 @@ class HoroscopeAdapter (private val dataSet: List<Horoscope>) :
         val context = holder.logoimageView.context
         holder.logoimageView.setImageDrawable(context.getDrawable(horoscope.logo))*/
         holder.render(horoscope)
+        //Click en la celda ejecuta el bloque de codigo(Funcion lambda)
+        holder.itemView.setOnClickListener{
+            //Log.i("ADAPTER","_He hecho click en el horoscopo: ${holder.itemView.context.getString(horoscope.name)}")
+            onItemClickListener(position)
+        }
     }
 
 }

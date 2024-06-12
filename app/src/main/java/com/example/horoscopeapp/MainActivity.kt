@@ -1,5 +1,6 @@
 package com.example.horoscopeapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -45,7 +46,14 @@ class MainActivity : AppCompatActivity() {
             Log.i("HOROSCOPE",horoscope.name)
         }
 
-        val adapter = HoroscopeAdapter(horoscopesList)
+        val adapter = HoroscopeAdapter(horoscopesList) { position ->
+            //val horoscope = horoscopesList[position]
+            Log.i(
+                "onItemClickListener",
+                "He hecho click en la posicion: $position, -> ${horoscopesList[position].name}"
+            )
+            navigateToDetail(horoscopesList[position])
+        }
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
@@ -54,5 +62,15 @@ class MainActivity : AppCompatActivity() {
         getString(R.string.app_name)
         getColor(R.color.purple_200)
 
+    }
+
+    //Funcion que navega a la siguiente pantalla para mostrar el detalle
+    fun navigateToDetail(horoscope: Horoscope){
+        //Para navegar a otra pantalla(Activity)
+        val intent: Intent = Intent(this,DetailActivity::class.java)
+        intent.putExtra("HOROSCOPE_ID",horoscope.id)//Optional parameters para el intent de la nueva pantalla
+        intent.putExtra("HOROSCOPE_NAME",horoscope.name)//Optional parameters para el intent de la nueva pantalla
+        intent.putExtra("HOROSCOPE_LOGO",horoscope.logo)//Optional parameters para el intent de la nueva pantalla
+        startActivity(intent)
     }
 }
