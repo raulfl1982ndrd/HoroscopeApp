@@ -27,12 +27,13 @@ class HoroscopeAdapter (private val dataSet: List<Horoscope>) :
 
     override fun onBindViewHolder(holder: HoroscopeViewHolder, position: Int) {
         val horoscope = dataSet[position]
-        holder.nametextView.text = horoscope.name
+        /*holder.nametextView.text = horoscope.name
         holder.desctextView.text = horoscope.desc
-        holder.datetextView.text = horoscope.date
+        //holder.datetextView.text = horoscope.date
+        holder.datetextView.text = getString(horoscope.name)
         //holder.logoimageView.setImageResource(horoscope.logo)
         val context = holder.logoimageView.context
-        holder.logoimageView.setImageDrawable(context.getDrawable(horoscope.logo))
+        holder.logoimageView.setImageDrawable(context.getDrawable(horoscope.logo))*/
         holder.render(horoscope)
     }
 
@@ -55,7 +56,7 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun render(horoscope: Horoscope){
         nametextView.setText(horoscope.name)
         desctextView.setText(horoscope.desc)
-        datetextView.setIn(horoscope.date)
+        datetextView.setText(horoscope.date)
         logoimageView.setImageResource(horoscope.logo)
     }
 }
