@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">HoroscopeApp</string>
+
+    <string name="menu_search">Search</string>
+    <string name="menu_next">Next</string>
+    <string name="menu_prev">Previous</string>
+    <string name="menu_favorite">Favorite</string>
+    <string name="menu_share">Share</string>
+
+    <string name="horoscope_of_day">Horoscope of today:</string>
     <string name="date_aries">(march 21 - april 19)</string>
     <string name="date_taurus">(april 20 - may 20)</string>
     <string name="date_gemini">(may 21 - june 20)</string>
