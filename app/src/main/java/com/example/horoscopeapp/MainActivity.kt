@@ -59,7 +59,8 @@ class MainActivity : AppCompatActivity() {
     fun navigateToDetail(horoscope: Horoscope){
         //Para navegar a otra pantalla(Activity)
         val intent: Intent = Intent(this,DetailActivity::class.java)
-        intent.putExtra("HOROSCOPE_ID",horoscope.id)//Optional parameters para el intent de la nueva pantalla
+        //intent.putExtra("HOROSCOPE_ID",horoscope.id)//Optional parameters para el intent de la nueva pantalla
+        intent.putExtra(DetailActivity.EXTRA_HOROSCOPE_ID,horoscope.id)//Optional parameters para el intent de la nueva pantalla
         intent.putExtra("HOROSCOPE_NAME",horoscope.name)//Optional parameters para el intent de la nueva pantalla
         intent.putExtra("HOROSCOPE_LOGO",horoscope.logo)//Optional parameters para el intent de la nueva pantalla
         startActivity(intent)

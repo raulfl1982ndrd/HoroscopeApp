@@ -1,12 +1,14 @@
 package com.example.horoscopeapp
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.MainScope
 
 class DetailActivity : AppCompatActivity() {
 
@@ -15,6 +17,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     lateinit var horoscope: Horoscope
+    private lateinit var menu_next: Button
+    private lateinit var menu_prev: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
@@ -27,6 +32,7 @@ class DetailActivity : AppCompatActivity() {
         //
         val id = intent.getStringExtra(DetailActivity.EXTRA_HOROSCOPE_ID)
 
+
         horoscope = HoroscopeProvider.findById(id!!)!!
         /*val name = intent.getIntExtra("HOROSCOPE_NAME",-1)
         val logo = intent.getIntExtra("HOROSCOPE_LOGO",-1)*/
@@ -35,5 +41,9 @@ class DetailActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.horoscopeImageView).setImageResource(horoscope.logo)
         /*findViewById<ImageView>(R.id.imageView).setImageDrawable(getDrawable(logo))*/
 
+        menu_next = findViewById(R.id.menu_next)
+        menu_prev = findViewById(R.id.menu_prev)
+
     }
+
 }
