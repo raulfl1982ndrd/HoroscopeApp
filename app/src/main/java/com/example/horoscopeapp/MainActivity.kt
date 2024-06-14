@@ -3,8 +3,12 @@ package com.example.horoscopeapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -53,6 +57,36 @@ class MainActivity : AppCompatActivity() {
         getString(R.string.app_name)
         getColor(R.color.purple_200)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_activity_main,menu)
+        val searchViewItem = menu?.findItem(R.id.menu_search)
+        val searchView: SearchView = searchViewItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.i("SEARCH","Estoy buscando: $newText")
+                horoscopesList = HoroscopeProvider.findAll()
+
+                return true
+            }
+
+        })
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_search -> {
+                Log.i("MENU","He hecho click en el menu settings")
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     //Funcion que navega a la siguiente pantalla para mostrar el detalle

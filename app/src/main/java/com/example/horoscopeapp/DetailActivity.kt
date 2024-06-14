@@ -1,6 +1,9 @@
 package com.example.horoscopeapp
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -45,5 +48,18 @@ class DetailActivity : AppCompatActivity() {
         menu_prev = findViewById(R.id.menu_prev)
 
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_activity_detail,menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_search -> {
+                Log.i("MENU","HE hecho click en el menu settings")
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 }
