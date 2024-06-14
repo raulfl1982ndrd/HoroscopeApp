@@ -1,5 +1,8 @@
 package com.example.horoscopeapp
 
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.style.BackgroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +12,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class HoroscopeAdapter (private val dataSet: List<Horoscope>,private val onItemClickListener: (Int)->Unit) :
+class HoroscopeAdapter (private var dataSet: List<Horoscope>,private val onItemClickListener: (Int)->Unit) :
     RecyclerView.Adapter<HoroscopeViewHolder>() {
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
      */
+    private var highlightText:String? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoroscopeViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(parent.context)
@@ -44,6 +48,18 @@ class HoroscopeAdapter (private val dataSet: List<Horoscope>,private val onItemC
         }
     }
 
+    //Estemetodo sirve para actualizar los datos
+    fun updateData(newDataSet: List<Horoscope>){
+
+        dataSet = newDataSet
+        notifyDataSetChanged()
+    }
+
+    fun updateData(newDataSet: List<Horoscope>,highlight:String){
+        this.highlightText = highlight
+        dataSet = newDataSet
+        notifyDataSetChanged()
+    }
 }
 
 
@@ -66,4 +82,19 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         datetextView.setText(horoscope.date)
         logoimageView.setImageResource(horoscope.logo)
     }
+    //Subraya el texto que coincide con la busqueda
+    fun hightlight(text:String){
+        val nameHighlighted = nametextView.text.toString().highlight(text)
+        nametextView.text = nameHighlighted
+        /*val descHighlighted = desctextView.text.toString().highlight(text)
+        desctextView.text = descHighlighted */
+    }
+
+}
+
+fun String.highlight(text: String):SpannableString{
+    val str = SpannableString(this)
+    val startIndex = str.indexOf(text,0, true)
+    str.setSpan(BackgroundColorSpan(Color.CYAN),startIndex,startIndex +text.length,0)
+   return str
 }

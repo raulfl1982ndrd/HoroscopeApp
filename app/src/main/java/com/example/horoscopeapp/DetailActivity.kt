@@ -22,7 +22,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var horoscope: Horoscope
     private lateinit var menu_next: Button
     private lateinit var menu_prev: Button
-
+    var isFavorite : Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
@@ -48,15 +48,31 @@ class DetailActivity : AppCompatActivity() {
         menu_prev = findViewById(R.id.menu_prev)
 
     }
+
+    //Procedimiento para instanciar inflar el menu que hemos creado en la activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_activity_detail,menu)
         return true
     }
-
+    //Funcion para hacer algo a
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_search -> {
-                Log.i("MENU","HE hecho click en el menu settings")
+            R.id.menu_favorite -> {
+                if (!isFavorite) {
+                    isFavorite = true
+                    item.icon = getDrawable(R.drawable.ic_favorite_24)
+                    Log.i("MENU","HE hecho click en el menu favorite selecionado favorito")
+                }else
+                if (isFavorite){
+                    isFavorite = false
+                    item.icon = getDrawable(R.drawable.ic_favorite_border_24)
+                    Log.i("MENU","HE hecho click en el menu favorite desselecionado favorito")
+                }
+
+                true
+            }
+            R.id.menu_share -> {
+                Log.i("MENU","HE hecho click en el menu share")
                 true
             }
             else -> return super.onOptionsItemSelected(item)

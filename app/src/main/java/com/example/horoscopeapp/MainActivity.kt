@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var horoscopesList: List<Horoscope>
 
     lateinit var recyclerView: RecyclerView
+
+    lateinit var adapter:HoroscopeAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             Log.i("HOROSCOPE",horoscope.name)
         }
 
-        val adapter = HoroscopeAdapter(horoscopesList) { position ->
+         adapter = HoroscopeAdapter(horoscopesList) { position ->
             //val horoscope = horoscopesList[position]
             Log.i(
                 "onItemClickListener",
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         getColor(R.color.purple_200)
 
     }
-
+//Procedimiento para instanciar el menu que hemos creado en la activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_activity_main,menu)
         val searchViewItem = menu?.findItem(R.id.menu_search)
@@ -70,15 +72,25 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 Log.i("SEARCH","Estoy buscando: $newText")
-                horoscopesList = HoroscopeProvider.findAll()
+                if (newText != null) {
+                    //Devolvemos toda la lista.filtramos tal que el nombre de la lista que estamos buscando en la
+                    //busqueda contenga el texto ignorando las mayusculas
+                    horoscopesList =
+                            //Dependiedo como hallamos declarado el horoscope.name en la clase Horoscope
+                            //como un entero si utilizamos el fichero de string o un string si tenemos el
+                            //el nomnbre harcoded como string en el Horosope provider utilizamos una linea u otra de codigo
+                            //HoroscopeProvider.findAll().filter{getString(it.name).contains(newText,true) }  //Strings
+                            HoroscopeProvider.findAll().filter{it.name.contains(newText,true) }     //Hardcoded
 
+                    adapter.updateData(horoscopesList,newText)
+                }
                 return true
             }
 
         })
         return true
     }
-
+//funcion para detectar el click en el menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_search -> {

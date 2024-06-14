@@ -8,6 +8,20 @@
     <string name="menu_share">Share</string>
 
     <string name="horoscope_of_day">Horoscope of today:</string>
+
+    <string name="horoscope_name_aries">Aries</string>
+    <string name="horoscope_name_taurus">Taurus</string>
+    <string name="horoscope_name_gemini">Gemini</string>
+    <string name="horoscope_name_cancer">Cancer</string>
+    <string name="horoscope_name_leo">Leo</string>
+    <string name="horoscope_name_virgo">Virgo</string>
+    <string name="horoscope_name_libra">Libra</string>
+    <string name="horoscope_name_scorpio">Scorpio</string>
+    <string name="horoscope_name_sagittarius">Sagittarius</string>
+    <string name="horoscope_name_capricorn">Capricorn</string>
+    <string name="horoscope_name_aquarius">Aquarius</string>
+    <string name="horoscope_name_pisces">Pisces</string>
+
     <string name="date_aries">(march 21 - april 19)</string>
     <string name="date_taurus">(april 20 - may 20)</string>
     <string name="date_gemini">(may 21 - june 20)</string>
@@ -20,4 +34,5 @@
     <string name="date_capricorn">(december 22 - january 19)</string>
     <string name="date_aquarius">(january 20 - february 18)</string>
     <string name="date_pisces">(february 19 - march 20)</string>
+
 </resources>
