@@ -1,4 +1,6 @@
-package com.example.horoscopeapp
+package com.example.horoscopeapp.data
+
+import com.example.horoscopeapp.R
 
 class HoroscopeProvider {
     companion object{
@@ -20,7 +22,7 @@ class HoroscopeProvider {
             return horoscopesList
         }
 
-        fun findById(id:String):Horoscope?{
+        fun findById(id:String): Horoscope?{
             return horoscopesList.find{it.id == id }
         }
     }

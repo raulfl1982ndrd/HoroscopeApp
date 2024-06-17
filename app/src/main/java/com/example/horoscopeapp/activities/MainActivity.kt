@@ -1,19 +1,19 @@
-package com.example.horoscopeapp
+package com.example.horoscopeapp.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.horoscopeapp.data.Horoscope
+import com.example.horoscopeapp.adapters.HoroscopeAdapter
+import com.example.horoscopeapp.data.HoroscopeProvider
+import com.example.horoscopeapp.R
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
 
-    lateinit var adapter:HoroscopeAdapter
+    lateinit var adapter: HoroscopeAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     //Funcion que navega a la siguiente pantalla para mostrar el detalle
     fun navigateToDetail(horoscope: Horoscope){
         //Para navegar a otra pantalla(Activity)
-        val intent: Intent = Intent(this,DetailActivity::class.java)
+        val intent: Intent = Intent(this, DetailActivity::class.java)
         //intent.putExtra("HOROSCOPE_ID",horoscope.id)//Optional parameters para el intent de la nueva pantalla
         intent.putExtra(DetailActivity.EXTRA_HOROSCOPE_ID,horoscope.id)//Optional parameters para el intent de la nueva pantalla
         intent.putExtra("HOROSCOPE_NAME",horoscope.name)//Optional parameters para el intent de la nueva pantalla

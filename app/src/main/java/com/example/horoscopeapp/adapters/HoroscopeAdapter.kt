@@ -1,18 +1,19 @@
-package com.example.horoscopeapp
+package com.example.horoscopeapp.adapters
 
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.horoscopeapp.R
+import com.example.horoscopeapp.data.Horoscope
+import com.example.horoscopeapp.utils.highlight
 
-class HoroscopeAdapter (private var dataSet: List<Horoscope>,private val onItemClickListener: (Int)->Unit) :
+class HoroscopeAdapter (private var dataSet: List<Horoscope>, private val onItemClickListener: (Int)->Unit) :
     RecyclerView.Adapter<HoroscopeViewHolder>() {
     /**
      * Provide a reference to the type of views that you are using
@@ -58,7 +59,7 @@ class HoroscopeAdapter (private var dataSet: List<Horoscope>,private val onItemC
         notifyDataSetChanged()
     }
 
-    fun updateData(newDataSet: List<Horoscope>,highlight:String){
+    fun updateData(newDataSet: List<Horoscope>, highlight:String){
         this.highlightText = highlight
         dataSet = newDataSet
         notifyDataSetChanged()
@@ -99,9 +100,3 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 }
 
-fun String.highlight(text: String):SpannableString{
-    val str = SpannableString(this)
-    val startIndex = str.indexOf(text,0, true)
-    str.setSpan(BackgroundColorSpan(Color.CYAN),startIndex,startIndex +text.length,0)
-   return str
-}
