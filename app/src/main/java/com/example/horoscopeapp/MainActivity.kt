@@ -75,13 +75,17 @@ class MainActivity : AppCompatActivity() {
                 if (newText != null) {
                     //Devolvemos toda la lista.filtramos tal que el nombre de la lista que estamos buscando en la
                     //busqueda contenga el texto ignorando las mayusculas
-                    horoscopesList =
+  /*                  horoscopesList =
                             //Dependiedo como hallamos declarado el horoscope.name en la clase Horoscope
                             //como un entero si utilizamos el fichero de string o un string si tenemos el
                             //el nomnbre harcoded como string en el Horosope provider utilizamos una linea u otra de codigo
                             //HoroscopeProvider.findAll().filter{getString(it.name).contains(newText,true) }  //Strings
                             HoroscopeProvider.findAll().filter{it.name.contains(newText,true) }     //Hardcoded
-
+*/
+                    horoscopesList = HoroscopeProvider.findAll().filter {
+                       it.name.contains(newText, true) ||
+                                getString(it.date).contains(newText, true)
+                    }
                     adapter.updateData(horoscopesList,newText)
                 }
                 return true

@@ -41,6 +41,9 @@ class HoroscopeAdapter (private var dataSet: List<Horoscope>,private val onItemC
         val context = holder.logoimageView.context
         holder.logoimageView.setImageDrawable(context.getDrawable(horoscope.logo))*/
         holder.render(horoscope)
+        if (highlightText != null) {
+            holder.highlight(highlightText!!)
+        }
         //Click en la celda ejecuta el bloque de codigo(Funcion lambda)
         holder.itemView.setOnClickListener{
             //Log.i("ADAPTER","_He hecho click en el horoscopo: ${holder.itemView.context.getString(horoscope.name)}")
@@ -83,13 +86,17 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         logoimageView.setImageResource(horoscope.logo)
     }
     //Subraya el texto que coincide con la busqueda
-    fun hightlight(text:String){
-        val nameHighlighted = nametextView.text.toString().highlight(text)
-        nametextView.text = nameHighlighted
-        /*val descHighlighted = desctextView.text.toString().highlight(text)
-        desctextView.text = descHighlighted */
+    // Subraya el texto que coincide con la busqueda
+    fun highlight(text: String) {
+        try {
+            val highlighted = nametextView.text.toString().highlight(text)
+            nametextView.text = highlighted
+        } catch (e: Exception) { }
+        try {
+            val highlighted = datetextView.text.toString().highlight(text)
+            datetextView.text = highlighted
+        } catch (e: Exception) { }
     }
-
 }
 
 fun String.highlight(text: String):SpannableString{
