@@ -3,7 +3,7 @@ package com.example.horoscopeapp.utils
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
-
+//ESto es para definir una funcion para una clase
 fun String.highlight(text: String): SpannableString {
     val str = SpannableString(this)
     val startIndex = str.indexOf(text,0, true)

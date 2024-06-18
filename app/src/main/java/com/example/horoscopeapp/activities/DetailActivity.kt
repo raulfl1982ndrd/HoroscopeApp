@@ -58,20 +58,34 @@ class DetailActivity : AppCompatActivity() {
         favoriteButton = findViewById(R.id.favoriteButton)
         //setFavoriteButtonIcon()
         //setFavoriteIcon()
+        //Al hacer click en el boton de favoritos(No el menu de favoritos)
         favoriteButton.setOnClickListener {
             if (isFavorite){
+                //Se elimina el valor de la sesion
                 session.setFavoriteHoroscopeValue("")
             }else{
+                //Se crea el valor en la sesion
                 session.setFavoriteHoroscopeValue(horoscope.id)
             }
             isFavorite = !isFavorite
+            //Se actualiza el boton de favoritos y el menu de favoritos con el valor
             setFavoriteButtonIcon()
         }
-
-        menu_next = findViewById(R.id.menu_next)
         menu_prev = findViewById(R.id.menu_prev)
+        menu_next = findViewById(R.id.menu_next)
+
+        menu_prev.setOnClickListener{
+
+        }
+
+        menu_next.setOnClickListener{
+
+        }
+        //Se pone el titulo de la action bar
         supportActionBar?.setTitle(horoscope.name)
+        //Se pone el subtitulo de la action bar
         supportActionBar?.setSubtitle(horoscope.date)
+        //Se muestra el boton atras en la action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }

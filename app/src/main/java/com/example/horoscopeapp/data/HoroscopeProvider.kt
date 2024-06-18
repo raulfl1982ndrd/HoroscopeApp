@@ -18,10 +18,11 @@ class HoroscopeProvider {
             Horoscope("aquarius","Aquarius",R.drawable.aquarius,R.string.date_aquarius,"11",false),
             Horoscope("pisces","Pisces",R.drawable.pisces,R.string.date_pisces,"12",false)
         )
+        //Recupera toda la lista de horoscopos
         fun findAll():List<Horoscope>{
             return horoscopesList
         }
-
+        //Recupera de la lista de horosocopos uno con un id concreto
         fun findById(id:String): Horoscope?{
             return horoscopesList.find{it.id == id }
         }

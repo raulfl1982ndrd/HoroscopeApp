@@ -28,13 +28,15 @@ class HoroscopeAdapter (private var dataSet: List<Horoscope>, private val onItem
 
         return HoroscopeViewHolder(view)
     }
-
+    //Recupera el numero de registros del data set
     override fun getItemCount(): Int {
         return dataSet.size
     }
 
     override fun onBindViewHolder(holder: HoroscopeViewHolder, position: Int) {
         val horoscope = dataSet[position]
+
+        //
         /*holder.nametextView.text = horoscope.name
         holder.desctextView.text = horoscope.desc
         //holder.datetextView.text = horoscope.date
@@ -59,7 +61,7 @@ class HoroscopeAdapter (private var dataSet: List<Horoscope>, private val onItem
         dataSet = newDataSet
         notifyDataSetChanged()
     }
-
+    //Este metodo sirve para resaltar los datos y actualizar los datos
     fun updateData(newDataSet: List<Horoscope>, highlight:String){
         this.highlightText = highlight
         dataSet = newDataSet
@@ -74,6 +76,7 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val datetextView: TextView
     val logoimageView: ImageView
     val favoriteImageView: ImageView
+    //Asigna los valores que se van a mostrar con los valores de layout
     init {
         // Define click listener for the ViewHolder's View
         nametextView = view.findViewById(R.id.nameTextView)
@@ -83,24 +86,27 @@ class HoroscopeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         favoriteImageView = view.findViewById(R.id.favorites)
     }
 
+    //Muestra los componentes
     fun render(horoscope: Horoscope){
         nametextView.setText(horoscope.name)
         desctextView.setText(horoscope.desc)
         datetextView.setText(horoscope.date)
         logoimageView.setImageResource(horoscope.logo)
-
+        //Recuperamos el context del itemView
         val context = itemView.context
+        //Con el context recuperamos de la sesion el horoscopo favorito
         var isFavorite = SessionManager(context).isFavorite(horoscope.id)
 
+        //Si es favorito mostramos la imagen de favorito
         if (isFavorite){
             favoriteImageView.visibility = View.VISIBLE
+        //Sino ocultamos la imagen de favorito
         }else{
             favoriteImageView.visibility = View.GONE
         }
 
     }
     //Subraya el texto que coincide con la busqueda
-    // Subraya el texto que coincide con la busqueda
     fun highlight(text: String) {
         try {
             val highlighted = nametextView.text.toString().highlight(text)
