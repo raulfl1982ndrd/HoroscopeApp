@@ -60,6 +60,11 @@ class MainActivity : AppCompatActivity() {
         getColor(R.color.purple_200)
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.updateData(horoscopesList)
+    }
 //Procedimiento para instanciar el menu que hemos creado en la activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_activity_main,menu)

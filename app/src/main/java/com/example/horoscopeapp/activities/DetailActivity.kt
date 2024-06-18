@@ -56,8 +56,8 @@ class DetailActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.horoscopeImageView).setImageResource(horoscope.logo)
         /*findViewById<ImageView>(R.id.imageView).setImageDrawable(getDrawable(logo))*/
         favoriteButton = findViewById(R.id.favoriteButton)
-        setFavoriteButtonIcon()
-        setFavoriteIcon()
+        //setFavoriteButtonIcon()
+        //setFavoriteIcon()
         favoriteButton.setOnClickListener {
             if (isFavorite){
                 session.setFavoriteHoroscopeValue("")
@@ -70,48 +70,60 @@ class DetailActivity : AppCompatActivity() {
 
         menu_next = findViewById(R.id.menu_next)
         menu_prev = findViewById(R.id.menu_prev)
+        supportActionBar?.setTitle(horoscope.name)
+        supportActionBar?.setSubtitle(horoscope.date)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 
     fun setFavoriteButtonIcon(){
         if (isFavorite){
             favoriteButton.setImageResource(R.drawable.ic_favorite_24)
+            favoriteMenuItem.setIcon(R.drawable.ic_favorite_24)
         }else{
             favoriteButton.setImageResource(R.drawable.ic_favorite_border_24)
+            favoriteMenuItem.setIcon(R.drawable.ic_favorite_border_24)
         }
     }
-    fun setFavoriteIcon(){
+    /*fun setFavoriteIcon(){
         if (isFavorite){
             favoriteMenuItem.setIcon(R.drawable.ic_favorite_24)
         }else{
             favoriteMenuItem.setIcon(R.drawable.ic_favorite_border_24)
         }
-    }
+    }*/
 
 
     //Procedimiento para instanciar inflar el menu que hemos creado en la activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_activity_detail,menu)
-        menu?.findItem(R.id.menu_favorite)
+        favoriteMenuItem = menu!!.findItem(R.id.menu_favorite)
+        setFavoriteButtonIcon()
         return true
+
+
+
     }
     //Funcion para hacer algo a
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home ->{
+                finish()
+                true
+            }
             R.id.menu_favorite -> {
 
                 if (isFavorite) {
                     //item.icon = getDrawable(R.drawable.ic_favorite_24)
                     session.setFavoriteHoroscopeValue("")
                     Log.i("MENU","HE hecho click en el menu favorite selecionado favorito")
-                }else
-                if (!isFavorite){
+                }else {
                     //item.icon = getDrawable(R.drawable.ic_favorite_border_24)
                     session.setFavoriteHoroscopeValue(horoscope.id)
                     Log.i("MENU","HE hecho click en el menu favorite desselecionado favorito")
                 }
                 isFavorite = !isFavorite
-                setFavoriteIcon()
+                setFavoriteButtonIcon()
                 true
             }
             R.id.menu_share -> {
