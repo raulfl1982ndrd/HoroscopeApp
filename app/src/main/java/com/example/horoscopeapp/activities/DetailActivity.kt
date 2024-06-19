@@ -14,6 +14,14 @@ import com.example.horoscopeapp.utils.SessionManager
 import com.example.horoscopeapp.data.Horoscope
 import com.example.horoscopeapp.data.HoroscopeProvider
 import com.example.horoscopeapp.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class DetailActivity : AppCompatActivity() {
     companion object{
@@ -25,6 +33,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var favoriteButton:ImageButton
     lateinit var imageView: ImageView
     lateinit var textView: TextView
+    private lateinit var dailyhoroscopeTextView:TextView
     private lateinit var menu_next: Button
     private lateinit var menu_prev: Button
     lateinit var  favoriteMenuItem: MenuItem
@@ -56,6 +65,7 @@ class DetailActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.horoscopeImageView).setImageResource(horoscope.logo)
         /*findViewById<ImageView>(R.id.imageView).setImageDrawable(getDrawable(logo))*/
         favoriteButton = findViewById(R.id.favoriteButton)
+        dailyhoroscopeTextView = findViewById(R.id.horoscopeLuckTextView)
         //setFavoriteButtonIcon()
         //setFavoriteIcon()
         //Al hacer click en el boton de favoritos(No el menu de favoritos)
@@ -88,6 +98,7 @@ class DetailActivity : AppCompatActivity() {
         //Se muestra el boton atras en la action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        getDailyHoroscope()
     }
 
     fun setFavoriteButtonIcon(){
@@ -153,5 +164,48 @@ class DetailActivity : AppCompatActivity() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    fun getDailyHoroscope() {
+        CoroutineScope(Dispatchers.IO).launch{
+
+
+        try {
+        val direccionurl: String =
+            "https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${horoscope.id}&day=TODAY"
+
+        val url = URL(direccionurl)
+        val con = url.openConnection() as HttpURLConnection
+        con.requestMethod = "GET"
+        val responseCode = con.responseCode
+        Log.i("HTTP", "Response Code::$responseCode")
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            //Metemos el cuerppo de la respuesta en un BufferedReader
+            val bufferedReader = BufferedReader(InputStreamReader(con.inputStream))
+            var inputLine: String?
+            val response = StringBuffer()
+            while (bufferedReader.readLine().also { inputLine = it } != null) {
+                response.append(inputLine)
+            }
+            bufferedReader.close()
+            response.toString()
+            Log.i("HTTP", "Response :: $ {response.toString()}")
+            //
+            val json = JSONObject(response.toString())
+
+            val result =json.getJSONObject("data").getString("horoscope_data")
+            //Ejecutamos en el hilo principal o con la corutina sino es un activity o con runOnUiThread si es un activity
+            /*Coroutine(Dispacher.Main).launch{dailyhoroscopeTextView.text = result}*/
+            Log.i("HTTP","Result::${result}")
+            runOnUiThread {
+                dailyhoroscopeTextView.text = result
+            }
+        } else {//Hubo un error
+            Log.w("HTTP", "Response ::Hubo un error")
+        }
+    }catch(e: Exception){
+        Log.e("HTTP", "Response Error ::${e.stackTraceToString()}")
+    }
+    }
     }
 }
