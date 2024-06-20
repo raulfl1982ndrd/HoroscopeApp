@@ -26,5 +26,17 @@ class HoroscopeProvider {
         fun findById(id:String): Horoscope?{
             return horoscopesList.find{it.id == id }
         }
+        fun getHoroscopeIndex(horoscope: Horoscope): Int {
+            return Companion.horoscopesList.indexOf(horoscope)
+        }
+        fun getHoroscope(index: Int): Horoscope {
+            return Companion.horoscopesList[index]
+        }
+
+        fun gethoroscopesListSize():Int{
+            return horoscopesList.size
+
+        }
     }
+
 }

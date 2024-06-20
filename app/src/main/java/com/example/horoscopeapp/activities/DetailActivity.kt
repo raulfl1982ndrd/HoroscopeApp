@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.horoscopeapp.utils.SessionManager
@@ -33,10 +35,13 @@ class DetailActivity : AppCompatActivity() {
     lateinit var favoriteButton:ImageButton
     lateinit var imageView: ImageView
     lateinit var textView: TextView
+    private var currentHoroscopeIndex:Int = -1
     private lateinit var dailyhoroscopeTextView:TextView
+    private lateinit var progress: ProgressBar
     private lateinit var menu_next: Button
     private lateinit var menu_prev: Button
     lateinit var  favoriteMenuItem: MenuItem
+    private var shareMenuItem: MenuItem? = null
     private lateinit var session : SessionManager
 
     var isFavorite : Boolean = false
@@ -61,8 +66,10 @@ class DetailActivity : AppCompatActivity() {
         /*val name = intent.getIntExtra("HOROSCOPE_NAME",-1)
         val logo = intent.getIntExtra("HOROSCOPE_LOGO",-1)*/
         //findViewById<TextView>(R.id.textView).text = getString(id)
-        findViewById<TextView>(R.id.horoscopeTextView).setText(id)
-        findViewById<ImageView>(R.id.horoscopeImageView).setImageResource(horoscope.logo)
+        textView = findViewById<TextView>(R.id.horoscopeTextView)
+        imageView = findViewById<ImageView>(R.id.horoscopeImageView)
+        textView.setText(id)
+        imageView.setImageResource(horoscope.logo)
         /*findViewById<ImageView>(R.id.imageView).setImageDrawable(getDrawable(logo))*/
         favoriteButton = findViewById(R.id.favoriteButton)
         dailyhoroscopeTextView = findViewById(R.id.horoscopeLuckTextView)
@@ -81,15 +88,24 @@ class DetailActivity : AppCompatActivity() {
             //Se actualiza el boton de favoritos y el menu de favoritos con el valor
             setFavoriteButtonIcon()
         }
+        progress = findViewById(R.id.progress)
         menu_prev = findViewById(R.id.menu_prev)
         menu_next = findViewById(R.id.menu_next)
-
+        currentHoroscopeIndex = HoroscopeProvider.getHoroscopeIndex(horoscope)
         menu_prev.setOnClickListener{
-
+            if (currentHoroscopeIndex == 0) {
+                currentHoroscopeIndex = HoroscopeProvider.gethoroscopesListSize()
+            }
+            currentHoroscopeIndex--
+            loadData()
         }
 
         menu_next.setOnClickListener{
-
+            currentHoroscopeIndex ++
+            if (currentHoroscopeIndex == HoroscopeProvider.gethoroscopesListSize()) {
+                currentHoroscopeIndex = 0
+            }
+            loadData()
         }
         //Se pone el titulo de la action bar
         supportActionBar?.setTitle(horoscope.name)
@@ -100,7 +116,31 @@ class DetailActivity : AppCompatActivity() {
 
         getDailyHoroscope()
     }
+    private fun loadData() {
+        horoscope = HoroscopeProvider.getHoroscope(currentHoroscopeIndex)
+        isFavorite = horoscope.id == session.favoriteHoroscope
 
+        // Set title
+        supportActionBar?.setTitle(horoscope.name);
+        supportActionBar?.setSubtitle(horoscope.date);
+
+        textView.text = horoscope.name
+        imageView.setImageResource(horoscope.logo)
+
+        setFavoriteButtonIcon()
+
+        getDailyHoroscope()
+    }
+
+
+    private fun setFavoriteDrawable () {
+        val favDrawableId = if (isFavorite) {
+            R.drawable.ic_favorite_24
+        } else {
+            R.drawable.ic_favorite_border_24
+        }
+        favoriteMenuItem?.setIcon(favDrawableId);
+    }
     fun setFavoriteButtonIcon(){
         if (isFavorite){
             favoriteButton.setImageResource(R.drawable.ic_favorite_24)
@@ -124,6 +164,8 @@ class DetailActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_activity_detail,menu)
         favoriteMenuItem = menu!!.findItem(R.id.menu_favorite)
         setFavoriteButtonIcon()
+        shareMenuItem = menu?.findItem(R.id.menu_share)
+        shareMenuItem?.setEnabled(false)
         return true
 
 
@@ -153,9 +195,10 @@ class DetailActivity : AppCompatActivity() {
             }
             R.id.menu_share -> {
                 Log.i("MENU","HE hecho click en el menu share")
+
                 val sendIntent = Intent()
                 sendIntent.setAction(Intent.ACTION_SEND)
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"This is my text to send")
+                sendIntent.putExtra(Intent.EXTRA_TEXT,dailyhoroscopeTextView.text)
                 sendIntent.setType("text/plain")
                 val shareIntent  = Intent.createChooser(sendIntent,null)
 
@@ -167,6 +210,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun getDailyHoroscope() {
+        progress.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.IO).launch{
 
 
@@ -189,7 +233,7 @@ class DetailActivity : AppCompatActivity() {
             }
             bufferedReader.close()
             response.toString()
-            Log.i("HTTP", "Response :: $ {response.toString()}")
+            Log.i("HTTP", "Response ::${response.toString()}")
             //
             val json = JSONObject(response.toString())
 
@@ -198,7 +242,9 @@ class DetailActivity : AppCompatActivity() {
             /*Coroutine(Dispacher.Main).launch{dailyhoroscopeTextView.text = result}*/
             Log.i("HTTP","Result::${result}")
             runOnUiThread {
+                progress.visibility = View.GONE
                 dailyhoroscopeTextView.text = result
+                shareMenuItem?.setEnabled(true)
             }
         } else {//Hubo un error
             Log.w("HTTP", "Response ::Hubo un error")

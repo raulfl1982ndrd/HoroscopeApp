@@ -58,9 +58,10 @@
                 android:id="@+id/horoscopeLuckTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="One of your closest friends could be in a rotten mood today, Aries. This person might be short with everyone and not inclined to communicate why. This could be due more to personal problems and little, if anything, to do with you or anyone else. You'll probably decide to leave him or her alone to work things out and get on with your own business. This is the wisest course of action."
+                tools:text="One of your closest friends could be in a rotten mood today, Aries. This person might be short with everyone and not inclined to communicate why. This could be due more to personal problems and little, if anything, to do with you or anyone else. You'll probably decide to leave him or her alone to work things out and get on with your own business. This is the wisest course of action."
                 android:textSize="18sp"
                 android:justificationMode="inter_word"
+                android:textStyle="bold"
                 android:padding="16dp"
                 android:lineHeight="28sp"/>
         </ScrollView>
