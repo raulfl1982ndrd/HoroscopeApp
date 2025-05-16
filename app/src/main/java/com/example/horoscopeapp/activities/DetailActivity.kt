@@ -70,7 +70,7 @@ class DetailActivity : AppCompatActivity() {
         //findViewById<TextView>(R.id.textView).text = getString(id)
         textView = findViewById<TextView>(R.id.horoscopeTextView)
         imageView = findViewById<ImageView>(R.id.horoscopeImageView)
-        textView.setText(id)
+        textView.setText(horoscope.name)
         imageView.setImageResource(horoscope.logo)
         /*findViewById<ImageView>(R.id.imageView).setImageDrawable(getDrawable(logo))*/
         favoriteButton = findViewById(R.id.favoriteButton)

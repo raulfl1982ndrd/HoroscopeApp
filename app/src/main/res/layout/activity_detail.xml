@@ -34,15 +34,17 @@
         android:textSize="30sp"
         android:gravity="center"
         tools:text="Aries"
-        android:visibility="gone"/>
+        />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:text="@string/horoscope_of_day"/>
+        android:text="@string/horoscope_of_day"
+        android:visibility="gone"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationBar"
