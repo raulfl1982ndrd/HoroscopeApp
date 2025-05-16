@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.horoscopeapp.utils.SessionManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.horoscopeapp.data.Horoscope
 import com.example.horoscopeapp.data.HoroscopeProvider
 import com.example.horoscopeapp.R
@@ -37,6 +38,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var textView: TextView
     private var currentHoroscopeIndex:Int = -1
     private lateinit var dailyhoroscopeTextView:TextView
+    lateinit var navigationBar: BottomNavigationView
     private lateinit var progress: ProgressBar
     private lateinit var menu_next: Button
     private lateinit var menu_prev: Button
@@ -88,6 +90,7 @@ class DetailActivity : AppCompatActivity() {
             //Se actualiza el boton de favoritos y el menu de favoritos con el valor
             setFavoriteButtonIcon()
         }
+        navigationBar = findViewById(R.id.navigationBar)
         progress = findViewById(R.id.progress)
         menu_prev = findViewById(R.id.menu_prev)
         menu_next = findViewById(R.id.menu_next)
@@ -114,7 +117,23 @@ class DetailActivity : AppCompatActivity() {
         //Se muestra el boton atras en la action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        getDailyHoroscope()
+        //getDailyHoroscope()
+        navigationBar.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.menu_daily -> {
+                    getDailyHoroscope("daily")
+                }
+                R.id.menu_weekly -> {
+                    getDailyHoroscope("weekly")
+                }
+                R.id.menu_monthly -> {
+                    getDailyHoroscope("monthly")
+                }
+            }
+
+            return@setOnItemSelectedListener true
+        }
+        navigationBar.selectedItemId = R.id.menu_daily
     }
     private fun loadData() {
         horoscope = HoroscopeProvider.getHoroscope(currentHoroscopeIndex)
@@ -129,7 +148,23 @@ class DetailActivity : AppCompatActivity() {
 
         setFavoriteButtonIcon()
 
-        getDailyHoroscope()
+        //getDailyHoroscope()
+        navigationBar.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.menu_daily -> {
+                    getDailyHoroscope("daily")
+                }
+                R.id.menu_weekly -> {
+                    getDailyHoroscope("weekly")
+                }
+                R.id.menu_monthly -> {
+                    getDailyHoroscope("monthly")
+                }
+            }
+
+            return@setOnItemSelectedListener true
+        }
+        navigationBar.selectedItemId = R.id.menu_daily
     }
 
 
@@ -209,14 +244,14 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    fun getDailyHoroscope() {
+    fun getDailyHoroscope(method: String) {
         progress.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.IO).launch{
 
 
         try {
         val direccionurl: String =
-            "https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${horoscope.id}&day=TODAY"
+            "https://horoscope-app-api.vercel.app/api/v1/get-horoscope/$method?sign=${horoscope.id}&day=TODAY"
 
         val url = URL(direccionurl)
         val con = url.openConnection() as HttpURLConnection
