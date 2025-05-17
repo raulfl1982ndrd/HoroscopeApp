@@ -1,6 +1,11 @@
 package com.example.horoscopeapp.activities
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,7 +16,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.horoscopeapp.utils.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.horoscopeapp.data.Horoscope
@@ -22,6 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -45,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var  favoriteMenuItem: MenuItem
     private var shareMenuItem: MenuItem? = null
     private lateinit var session : SessionManager
-
+    private lateinit var modalidad : String
     var isFavorite : Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,12 +132,15 @@ class DetailActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.menu_daily -> {
                     getDailyHoroscope("daily")
+                    modalidad = "daily"
                 }
                 R.id.menu_weekly -> {
                     getDailyHoroscope("weekly")
+                    modalidad = "weekly"
                 }
                 R.id.menu_monthly -> {
                     getDailyHoroscope("monthly")
+                    modalidad = "monthly"
                 }
             }
 
@@ -153,12 +166,15 @@ class DetailActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.menu_daily -> {
                     getDailyHoroscope("daily")
+                    modalidad = "daily"
                 }
                 R.id.menu_weekly -> {
                     getDailyHoroscope("weekly")
+                    modalidad = "weekly"
                 }
                 R.id.menu_monthly -> {
                     getDailyHoroscope("monthly")
+                    modalidad = "monthly"
                 }
             }
 
@@ -230,14 +246,15 @@ class DetailActivity : AppCompatActivity() {
             }
             R.id.menu_share -> {
                 Log.i("MENU","HE hecho click en el menu share")
-
-                val sendIntent = Intent()
+                var  texttoshare : String = "The " + modalidad + " horoscope for " + horoscope.name + " is: \n\n" + dailyhoroscopeTextView.text
+                /*val sendIntent = Intent()
                 sendIntent.setAction(Intent.ACTION_SEND)
-                sendIntent.putExtra(Intent.EXTRA_TEXT,dailyhoroscopeTextView.text)
+                sendIntent.putExtra(Intent.EXTRA_TEXT,texttoshare)
                 sendIntent.setType("text/plain")
                 val shareIntent  = Intent.createChooser(sendIntent,null)
 
-                startActivity(shareIntent)
+                startActivity(shareIntent)*/
+                shareDrawableImageWithText(this, horoscope.logo, texttoshare)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -288,5 +305,52 @@ class DetailActivity : AppCompatActivity() {
         Log.e("HTTP", "Response Error ::${e.stackTraceToString()}")
     }
     }
+    }
+
+    fun shareDrawableImageWithText(context: Context, drawableId: Int, message: String) {
+        val drawable = ContextCompat.getDrawable(context, drawableId)
+
+        if (drawable == null) {
+            Toast.makeText(context, "No se pudo cargar la imagen", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Convertir cualquier drawable (XML o PNG) a bitmap
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth.takeIf { it > 0 } ?: 100,
+            drawable.intrinsicHeight.takeIf { it > 0 } ?: 100,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        try {
+            val cachePath = File(context.cacheDir, "images")
+            cachePath.mkdirs()
+            val file = File(cachePath, "shared_image.png")
+            FileOutputStream(file).use { fos ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            }
+
+            val contentUri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                file
+            )
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/*"
+                putExtra(Intent.EXTRA_STREAM, contentUri)
+                putExtra(Intent.EXTRA_TEXT, message)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            context.startActivity(Intent.createChooser(shareIntent, "Compartir con:"))
+
+        } catch (e: Exception) {
+            Log.e("Compartir", "Error al compartir imagen: ${e.message}", e)
+            Toast.makeText(context, "Error al compartir imagen", Toast.LENGTH_SHORT).show()
+        }
     }
 }
